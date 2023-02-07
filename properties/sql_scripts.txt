@@ -1,0 +1,39 @@
+SELECT COUNT(`role`) AS "počet majitelů" FROM `roles` 
+INNER JOIN `users_has_roles` ON `users_has_roles`.`roles_id` = `roles`.`id` 
+INNER JOIN `users` ON `users`.`id` = `users_has_roles`.`users_id`
+WHERE `roles`.`role` = "Majitel";
+
+SELECT CONCAT_WS(" ", `users`.`first_name`, `users`.`last_name`) AS "jména majitelů" FROM `roles` 
+INNER JOIN `users_has_roles` ON `users_has_roles`.`roles_id` = `roles`.`id` 
+INNER JOIN `users` ON `users`.`id` = `users_has_roles`.`users_id`
+WHERE `roles`.`role` = "Majitel";
+
+SELECT MAX(`properties`.`price`) AS "Nejvyšší cenovka nemovitostí", `properties`.`id` AS "ID nemovitosti" FROM `properties`;
+
+SELECT MAX(`properties`.`price`) AS "Nejvyšší cenovka nemovitosti se smlouvou", `properties`.`id` AS "ID nemovitosti" FROM `properties`
+INNER JOIN `contracts` ON `properties`.`id` = `contracts`.`properties_id`;
+
+SELECT `properties`.`price` AS "Cenovky nemovitostí", `properties`.`id` AS "ID nemovitosti" FROM `properties`
+WHERE `properties`.`price` BETWEEN 1000000  AND 10000000
+ORDER BY `properties`.`price` DESC;
+
+SELECT `properties`.`price` AS "Cenovky nemovitostí se smlouvou", `properties`.`id` AS "ID nemovitosti" FROM `properties`
+INNER JOIN `contracts` ON `properties`.`id` = `contracts`.`properties_id`
+ORDER BY  `properties`.`price`;
+
+SELECT `properties`.`price` AS "Cenovky nemovitostí", `properties`.`id` AS "ID nemovitosti", `types`.`note` AS "Typ", `addresses`.`post_code` AS "PSČ" FROM `properties` 
+INNER JOIN `types` ON `types`.`id` = `properties`.`types_id`
+INNER JOIN `addresses` ON `properties`.`addresses_id` = `addresses`.`id`
+WHERE `properties`.`price` BETWEEN 1000000 AND 10000000 
+HAVING `types`.`note` IN ("byt")
+ORDER BY `properties`.`price` DESC;
+
+SELECT `addresses`.`post_code`, COUNT(*) AS "počet"
+FROM `addresses`
+GROUP BY `addresses`.`post_code`;
+
+SELECT `users`.`first_name` AS "jméno", `users`.`last_name` AS "přijmení", `addresses`.`house_number` AS "číslo domu", `addresses`.`street` AS "ulice", `addresses`.`post_code` AS "PSČ" FROM `users`
+INNER JOIN `addresses` ON `users`.`addresses_id` = `addresses`.`id`
+ORDER BY `addresses`.`house_number`;
+
+CREATE VIEW `jmena_osob`  AS SELECT concat_ws(' ',`users`.`first_name`,`users`.`last_name`) AS `Celá jména` FROM `users` ORDER BY `users`.`last_name` ASC  ;
