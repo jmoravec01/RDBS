@@ -28,7 +28,7 @@ WHERE (`roles`.`role` = 'Majitel')  ;
 CREATE VIEW `pocet_nemovitosti_podle_psc` AS 
 SELECT `addresses`.`post_code` AS `post_code`, count(0) AS `počet` 
 FROM `addresses` 
-GROUP BY `addresses`.`post_code``post_code`;
+GROUP BY `addresses`.`post_code`;
 ```
 ```
 CREATE VIEW `pocet_zaznamu_na_tabulku` AS 
