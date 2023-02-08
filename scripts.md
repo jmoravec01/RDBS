@@ -24,6 +24,32 @@ FROM ((`roles` join `users_has_roles` on((`users_has_roles`.`roles_id` = `roles`
 JOIN `users` on((`users`.`id` = `users_has_roles`.`users_id`)))
 WHERE (`roles`.`role` = 'Majitel')  ;
 ```
+```
+CREATE VIEW `pocet_nemovitosti_podle_psc` AS 
+SELECT `addresses`.`post_code` AS `post_code`, count(0) AS `počet` 
+FROM `addresses` 
+GROUP BY `addresses`.`post_code``post_code`;
+```
+```
+CREATE VIEW `pocet_zaznamu_na_tabulku` AS 
+SELECT avg(`information_schema`.`tables`.`TABLE_ROWS`) AS `prumerny_pocet_zaznamu` 
+FROM `information_schema`.`TABLES` 
+WHERE (`information_schema`.`tables`.`TABLE_SCHEMA` = 'properties')  ;
+```
+```
+CREATE VIEW `byty_1kk_az_10kk` AS 
+SELECT `price` AS `Cenovky nemovitostí`, `id` AS `ID nemovitosti`, `types`.`note` AS `Typ`, `addresses`.`post_code` AS `PSČ` 
+FROM ((`properties` join `types` on((`types`.`id` = `types_id`))) 
+join `addresses` on((`addresses_id` = `addresses`.`id`))) 
+WHERE (`price` between 1000000 and 10000000) HAVING (`types`.`note` = 'byt') 
+ORDER BY `price` AS `DESCdesc` ASC  ;
+```
+```
+CREATE VIEW `vnoreny_select`  AS 
+SELECT `users`.`first_name` AS `first_name`, `users`.`last_name` AS `last_name` 
+FROM `users` WHERE `users`.`id` in (select `users`.`id` from `users` 
+where (`users`.`id` <= 10))  ;
+```
 
 ## INDEX
 ```
