@@ -38,6 +38,8 @@ mycursor7 = mydb.cursor()
 mycursor7.execute("SELECT * FROM `types` ")
 typy_nemovitosti = mycursor7.fetchall()
     
+    
+# AHOJKY
 @app.route("/")
 def table():
     return render_template("table.html", data1 = users_vse, data2 = activity, data3 = adresy, data4 = majitele, data5 = zaznamy, data6 = nemovitosti_pocet_psc, data7 = typy_nemovitosti)
